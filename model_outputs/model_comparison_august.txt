@@ -1,0 +1,9 @@
+Model Comparison - August Test
+
+Model                          Recall     Prec       MAP        Hit Rate   n        K avg   
+--------------------------------------------------------------------------------------
+Baseline Freq-Recency          0.3698     0.5594     0.5238     0.9478     4198     8.0     
+NMF (k=20, blend=0.5)          0.3786     0.5771     0.5458     0.9462     4198     8.0     
+EASE (lambda=50)               0.3278     0.5226     0.4666     0.9221     4198     8.0     
+
+Winner (by recall): NMF (k=20, blend=0.5) (0.3786)

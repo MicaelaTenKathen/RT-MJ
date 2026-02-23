@@ -1,0 +1,31 @@
+AJUSTE DE HIPERPARAMETROS - RESUMEN
+Generado: 2026-02-17 10:37:15
+Train: Mayo-Junio 2022 | Validacion: Julio 2022 | K=5
+
+Modelo                    Recall     Precision    Hit Rate  
+---------------------------------------------------------
+Baseline Freq-Recency     0.2733     0.5381       0.8996    
+NMF                       0.3953     0.4532       0.9327     *
+EASE                      0.3679     0.4287       0.9271    
+
+* = mejor recall
+
+Mejores parametros:
+
+  Baseline:
+    recency_weight:  0.3
+    quantity_weight: 0.3
+
+  NMF:
+    n_components:    20
+    blend_weight:    0.50
+
+  EASE:
+    lambda_reg:      50
+
+Evaluaciones: 9 Baseline + 9 NMF + 5 EASE = 23 total
+
+Archivos detallados:
+  - model_outputs/baseline_tuning.csv
+  - model_outputs/nmf_tuning.csv
+  - model_outputs/ease_tuning.csv

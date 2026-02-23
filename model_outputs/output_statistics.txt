@@ -1,0 +1,27 @@
+Estadisticas del Output de Produccion
+
+Dimension                                Valor               
+------------------------------------------------------------
+Total de filas (recomendaciones)         35,116
+Clientes cubiertos                       4,400
+K minimo usado                           3
+K maximo usado                           12
+K promedio                               8.0
+K mediana                                8
+Fecha de scoring                         2022-09-01
+Modelo                                   nmf_(k=20,_blend=0.5)
+
+Distribucion de K
+
+K        Clientes  
+------------------
+3        287
+4        391
+5        415
+6        557
+7        395
+8        439
+9        380
+10       320
+11       215
+12       1,001

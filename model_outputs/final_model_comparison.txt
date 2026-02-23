@@ -1,0 +1,42 @@
+Comparacion Final de Modelos - Ventana Expandible
+Generado: 2026-02-23 15:53:18
+Splits: Julio 2022, Agosto 2022
+
+Modelo                         Metrica         Julio      Agosto     Promedio  
+---------------------------------------------------------------------------
+Baseline Freq-Recency          Recall          0.3498     0.3698     0.3598    
+                               Precision       0.4925     0.5594     0.5259    
+                               MAP             0.4478     0.5238     0.4858    
+                               Hit Rate        0.9213     0.9478     0.9345    
+                               n_evaluados     4115       4198      
+                               K promedio      8.0        8.0       
+---------------------------------------------------------------------------
+NMF (k=20, blend=0.5)          Recall          0.3568     0.3786     0.3677    
+                               Precision       0.5115     0.5771     0.5443    
+                               MAP             0.4742     0.5458     0.5100    
+                               Hit Rate        0.9142     0.9462     0.9302    
+                               n_evaluados     4115       4198      
+                               K promedio      8.0        8.0       
+---------------------------------------------------------------------------
+EASE (lambda=50)               Recall          0.3149     0.3278     0.3213    
+                               Precision       0.4686     0.5226     0.4956    
+                               MAP             0.4124     0.4666     0.4395    
+                               Hit Rate        0.8882     0.9221     0.9052    
+                               n_evaluados     4115       4198      
+                               K promedio      8.0        8.0       
+---------------------------------------------------------------------------
+
+Ganador (por recall promedio): NMF (k=20, blend=0.5) (0.3677)
+
+--- H4: K Fijo vs K Dinamico (NMF, Agosto) ---
+
+K Fijo = 5 (media global EDA: 3.0 SKUs/orden x 1.5)
+K Dinamico = por cliente segun SkuDistintosPromediosXOrden (rango 3-12)
+
+Metrica         K Fijo=5        K Dinamico      Delta          
+------------------------------------------------------------
+Recall          0.2927          0.3786          +0.0859 (+29.3%)
+Precision       0.6237          0.5771          -0.0466 (-7.5%)
+Hit_rate        0.9357          0.9462          +0.0105 (+1.1%)
+
+H4 validada: K Dinamico mejoro recall en 0.0859 (29.3%) vs K Fijo=5

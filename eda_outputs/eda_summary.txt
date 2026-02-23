@@ -1,0 +1,266 @@
+RESUMEN DEL ANALISIS EXPLORATORIO DE DATOS (EDA)
+Sistema de Recomendacion B2B - Quilmes
+
+Generado: 2026-02-17 09:07:57
+Rango de fechas: 2022-05-24 a 2022-08-31
+Periodo: 99 dias (~3.3 meses)
+
+--- 1. VISION GENERAL DE LOS DATOS ---
+
+  Transacciones:                 280,788
+  Ordenes:                        45,547
+  Clientes:                        4,535
+  SKUs (productos):                  530
+  Pares cliente-SKU unicos:      117,157
+  Pares posibles (CxS):        2,403,550
+
+--- 2. CALIDAD DE DATOS ---
+
+  2.1 Valores nulos en transacciones:
+       Sin valores nulos
+
+  2.2 Valores nulos en atributos:
+       - segmentoUnico: 75 (1.7%)
+       - canal: 14 (0.3%)
+
+  2.3 Duplicados:
+       - Duplicados exactos (todas las columnas):  40
+       - Duplicados logicos (ACCOUNT+ORDER+SKU):   20 (0.01%)
+
+  2.4 Cobertura transacciones-atributos:
+       - Transacciones con atributos:  99.28%
+       - Clientes sin atributos:       156
+
+  2.5 Cantidades invalidas (<=0):     0
+
+--- 3. ESTADISTICAS DESCRIPTIVAS ---
+
+  3.1 Ordenes por cliente:
+       Media:    10.0
+       Mediana:  8
+       Minimo:   1
+       Maximo:   98
+
+  3.2 SKUs distintos por orden:
+       Media:    6.2
+       Mediana:  5
+       Minimo:   1
+       Maximo:   55
+
+  3.3 Esparcidad de la matriz:
+       Esparcidad: 95.13%
+       (117,157 interacciones de 2,403,550 posibles)
+
+--- 4. ANALISIS DE POPULARIDAD DE PRODUCTOS ---
+
+  4.1 Top 10 SKUs por numero de ordenes:
+       #    SKU        Ordenes    Clientes   Cantidad total 
+       -------------------------------------------------
+       1    7038       14,687     2,696      143,210        
+       2    19088      9,914      2,103      116,987        
+       3    7651       9,903      2,585      52,047         
+       4    24880      8,883      2,180      34,061         
+       5    19341      5,850      1,828      24,705         
+       6    19086      5,633      1,455      15,788         
+       7    7026       5,502      1,716      16,995         
+       8    23902      5,195      1,792      14,013         
+       9    16668      4,905      1,592      12,313         
+       10   16667      4,845      1,516      10,336         
+
+  4.2 Concentracion (Analisis de Pareto):
+       - 80% de las ordenes proviene de 94 SKUs (17.7% del catalogo)
+       - 95% de las ordenes proviene de 211 SKUs (39.8% del catalogo)
+       - Implicacion: Alta concentracion, se necesita fallback robusto
+         para productos de baja frecuencia
+
+--- 5. COMPORTAMIENTO DE RECOMPRA ---
+
+  Tasa de recompra: 47.6%
+  (47.6% de los pares cliente-SKU tienen 2+ ordenes)
+
+  5.1 Distribucion por rangos:
+       1 orden:         52.4%
+       2-3 ordenes:     29.5%
+       4-5 ordenes:      9.5%
+       6+ ordenes:       8.5%
+
+  5.2 Distribucion acumulada:
+        1+ ordenes:    100.0% (117,157 pares)
+        2+ ordenes:     47.6% ( 55,725 pares)
+        3+ ordenes:     28.2% ( 32,995 pares)
+        5+ ordenes:     12.2% ( 14,306 pares)
+       10+ ordenes:      2.5% (  2,885 pares)
+
+  5.3 Implicacion para el modelo:
+       Alta tasa de recompra (47.6%) indica que los patrones
+       de frecuencia y recencia son senales fuertes para recomendacion.
+
+--- 6. DIVERSIDAD DEL CLIENTE ---
+
+  6.1 SKUs unicos comprados por cliente:
+       Media:    25.8
+       Mediana:  20
+       Minimo:   1
+       Maximo:   155
+
+  6.2 SKUs promedio por orden (por cliente):
+       Media:    3.0
+       Mediana:  2.5
+
+  6.3 Correlacion con atributo SkuDistintosPromediosXOrden:
+       Correlacion: 0.666 (Moderada)
+
+  6.4 Implicacion para K dinamico:
+       Media de SKUs/orden = 3.0 -> K fijo = ceil(3.0 x 1.5) = 5
+       Pero la variabilidad es alta (min=1, max=155),
+       lo que justifica usar K dinamico personalizado por cliente.
+
+--- 7. ANALISIS POR SEGMENTOS Y CANALES ---
+
+  7.1 Principales canales (por cantidad de ordenes):
+       #    Canal                  Ordenes    Clientes   SKUs/orden  
+       ----------------------------------------------------------
+       1    Tradicional              25,887     2,653       6.1
+       2    Kioscos/Maxikioscos       8,131       820       6.7
+       3    COMIDA                    4,256       406       7.0
+       4    Autoservicio              3,077       176       5.5
+       5    Mayorista                 1,369        52       3.2
+       6    BEBIDA                      935        99       6.2
+       7    ENTRETENIMIENTO             589        79       7.6
+       8    KA Minoristas               292        18       7.0
+       9    Instituciones               279        43       5.9
+       10   OTROS REF                   101        16       6.6
+       11   Bar/Restaurant               32         3       6.4
+
+       Transacciones sin canal: 2,484 (0.88%)
+
+  7.2 Principales segmentos (por cantidad de ordenes):
+       #    Segmento               Ordenes    Clientes   SKUs/orden  
+       ----------------------------------------------------------
+       1    4.Activos                21,120     1,894       6.3
+       2    5.Select                 11,365       631       6.9
+       3    2.Masivos                 6,072       777       5.5
+       4    1.Inactivos               4,186       876       4.3
+       5    3.Potenciales             1,634       126       7.3
+
+--- 8. PATRONES TEMPORALES ---
+
+  8.1 Actividad mensual:
+       Mes          Ordenes    Clientes     Transacciones   Cantidad total 
+       ----------------------------------------------------------------
+       2022-05            46          46            328            710
+       2022-06        13,791       4,112         82,219        320,945
+       2022-07        14,999       4,115         92,174        342,004
+       2022-08        16,711       4,198        106,067        450,609
+
+  8.2 Ordenes por dia de la semana:
+       Lunes         3,410  ##########
+       Martes        8,416  ##########################
+       Miercoles     9,483  ##############################
+       Jueves        8,576  ###########################
+       Viernes       9,190  #############################
+       Sabado        6,477  ####################
+
+  8.3 Ordenes en fin de semana: 14.5%
+
+--- 9. ATRIBUTOS DEL CLIENTE ---
+
+  Total de clientes en archivo de atributos: 4,400
+
+  Columna                             Tipo         Nulos        % Nulos    Unicos  
+  -----------------------------------------------------------------------------
+  BussinessSegment                    object       0            0.0        4       
+  totalVolumen                        float64      0            0.0        4,323   
+  SkuDistintosPromediosXOrden         float64      0            0.0        1,573   
+  SkuDistintosToTales                 int64        0            0.0        124     
+  concentracion                       object       0            0.0        4       
+  nse                                 object       0            0.0        4       
+  segmentoUnico                       object       75           1.7        5       
+  canal                               object       14           0.3        11      
+
+  Detalle por atributo:
+
+  - BussinessSegment (valores mas frecuentes):
+      HighUsage: 1,213 (27.6%)
+      PowerUsage: 1,213 (27.6%)
+      MediumUsage: 1,050 (23.9%)
+      MinimalUsage: 924 (21.0%)
+
+  - totalVolumen (distribucion numerica):
+      Media:   22.27
+      Mediana: 5.60
+      Min:     0.02
+      Max:     4274.44
+
+  - SkuDistintosPromediosXOrden (distribucion numerica):
+      Media:   5.91
+      Mediana: 5.14
+      Min:     0.70
+      Max:     33.00
+
+  - SkuDistintosToTales (distribucion numerica):
+      Media:   27.83
+      Mediana: 22.00
+      Min:     1.00
+      Max:     157.00
+
+  - concentracion (valores mas frecuentes):
+      Alto: 2,125 (48.3%)
+      Medio: 1,826 (41.5%)
+      S/D: 326 (7.4%)
+      Bajo: 123 (2.8%)
+
+  - nse (valores mas frecuentes):
+      Medio: 2,430 (55.2%)
+      S/D: 1,023 (23.2%)
+      Bajo: 879 (20.0%)
+      Alto: 68 (1.5%)
+
+  - segmentoUnico (valores mas frecuentes):
+      4.Activos: 1,894 (43.0%)
+      1.Inactivos: 884 (20.1%)
+      2.Masivos: 790 (18.0%)
+      5.Select: 631 (14.3%)
+      3.Potenciales: 126 (2.9%)
+
+  - canal (valores mas frecuentes):
+      Tradicional: 2,657 (60.4%)
+      Kioscos/Maxikioscos: 820 (18.6%)
+      COMIDA: 412 (9.4%)
+      Autoservicio: 186 (4.2%)
+      BEBIDA: 100 (2.3%)
+
+--- 10. HALLAZGOS CLAVE E IMPLICACIONES PARA EL MODELO ---
+
+  1. ALTA CONCENTRACION: 17.7% del catalogo (94 SKUs)
+     genera el 80% de las ordenes. Se requiere fallback de popularidad
+     para manejar productos de cola larga y clientes nuevos.
+
+  2. RECOMPRA ALTA: 47.6% de pares cliente-SKU
+     tienen 2+ ordenes. Las senales de frecuencia y recencia son
+     predictivas del comportamiento futuro.
+
+  3. ESPARCIDAD 95.1%: La matriz de interacciones es muy
+     dispersa. Se necesitan modelos que manejen bien la esparcidad
+     (NMF, EASE) y estrategias de fallback.
+
+  4. DIVERSIDAD VARIABLE: Los clientes compran entre 1 y 155
+     SKUs unicos (media: 25.8). Esto justifica K dinamico
+     en lugar de un K fijo para todos los clientes.
+
+  5. CANALES DIFERENCIADOS: Los patrones de compra varian entre canales.
+     El fallback debe ser especifico por canal, no solo global.
+
+  6. PERIODO CORTO: 99 dias (~3.3 meses) de datos.
+     Insuficiente para capturar estacionalidad completa (se requeririan 12+ meses).
+
+
+--- GRAFICOS GENERADOS ---
+
+  - eda_outputs/product_popularity.png     (Curva de Pareto + Distribucion de popularidad)
+  - eda_outputs/repurchase_distribution.png (Distribucion de recompra)
+  - eda_outputs/temporal_patterns.png       (Tendencias mensuales + Ordenes por dia)
+  - eda_outputs/segment_channel_heatmap.png (Heatmap segmento x canal)
+  - eda_outputs/customer_diversity.png      (Diversidad de SKUs por cliente)
+
+--- FIN DEL RESUMEN ---
